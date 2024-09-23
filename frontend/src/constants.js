@@ -1,4 +1,4 @@
-const defaultProducts = [
+export const defaultProducts = [
   {
     id: crypto.randomUUID(),
     name: 'Jaja z wolnego wybiegu (M/L)',
@@ -296,5 +296,25 @@ const defaultProducts = [
     src: '/koper_do_kiszenia.png',
   },
 ];
-
-export default defaultProducts;
+export const defaultClients = [
+  { address: 'Piotra Czajkowskiego 63b/8', phone: '608 078 465' },
+  { address: 'Piotra Czajkowskiego 29a/8', phone: '606 766 578' },
+  { address: 'Iwiny, Polna 20b', phone: '882 701 170' },
+  { address: 'Dobrzykowice, Błękitna 43a', phone: '606 851 119' },
+  { address: 'Kiełczów, Wrocławska 76', phone: '690 013 757' },
+  { address: 'Długołęka, Zachodnia 27', phone: '723 371 035' },
+  { address: 'Długołęka, Wschodnia 23', phone: '724 344 224' },
+  { address: 'Hermanowska 38/19', phone: '513 162 775' },
+  { address: 'Dziadoszańska 9', phone: '662 466 012' },
+  { address: 'Marii Konopnickiej 64A', phone: '509 427 587' },
+  { address: 'Poświęcka 22A/14', phone: '693 633 340' },
+  { address: 'Heleny Boguszewskiej 5', phone: '605 242 283' },
+  { address: 'Stanisława Kunickiego 39/6', phone: '605 609 318' },
+  { address: 'Wilczyce, Dębowa 4D', phone: '519 596 212' },
+  { address: 'Perkusyjna 19A/11', phone: '508 142 633' },
+  { address: 'Onufrego Zagłoby 14', phone: '503 758 837' },
+  { address: 'Łukowa 11', phone: '607 057 255' },
+  { address: 'Mokrzańska 24/5', phone: '663 282 765' },
+  { address: 'Wilczyce, Radosna 2/2', phone: '577 236 006' },
+  { address: 'Wysoka, Łagodna 6', phone: '501 257 561' },
+];
