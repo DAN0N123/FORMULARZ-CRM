@@ -34,7 +34,7 @@ export default function Vegetable({
           setIsEditMode(!isEditMode);
         }}
       >
-        <Pencil />
+        <Pencil width={'20px'} height={'auto'} />
       </div>
       {src != null && (
         <img src={src} className="h-[150px] w-auto object-cover" />

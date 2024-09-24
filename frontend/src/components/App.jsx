@@ -3,6 +3,7 @@ import React from 'react';
 import Layout from './Layout';
 import Vegetables from './Vegetables';
 import Clients from './Clients';
+import OrderForm from './OrderForm';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: '/klienci',
         element: <Clients />,
+      },
+      {
+        path: '/formularz',
+        element: <OrderForm />,
       },
     ],
   },

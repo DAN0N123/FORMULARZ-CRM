@@ -50,7 +50,7 @@ export default function Navbar() {
           className='relative w-[16rem] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:bottom-0 before:bg-darkBlue'
         >
           <Carrot color="#303c6c" width="2rem" height="2rem" />
-          <p> Warzywa </p>
+          <p> Produkty </p>
         </Link>
         <Link
           to="/klienci"
@@ -71,7 +71,8 @@ export default function Navbar() {
           <BookOpen color="#303c6c" width="2rem" height="2rem" />
           <p> Zamówienia </p>
         </div>
-        <div
+        <Link
+          to="/formularz"
           onClick={() => {
             setOpen(false);
           }}
@@ -79,7 +80,7 @@ export default function Navbar() {
         >
           <CirclePlus color="#303c6c" width="2rem" height="2rem" />
           <p> Dodaj zamówienie </p>
-        </div>
+        </Link>
       </div>
     </div>
   );
