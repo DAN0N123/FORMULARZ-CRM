@@ -20,10 +20,9 @@ export default function Navbar() {
       document.body.style.overflowY = '';
     };
   }, [open]);
+
   return (
-    <div
-      className={`w-full h-[3.5rem] bg-[#00000030] flex justify-start items-center p-4`}
-    >
+    <div className={`w-full h-[3.5rem] flex justify-start items-center p-4`}>
       <button
         onClick={() => {
           setOpen(true);

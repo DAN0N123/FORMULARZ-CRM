@@ -10,7 +10,7 @@ export default function PhoneNumberInput() {
     // Group the numbers into chunks of 3 and separate with spaces or dashes
     const formattedValue = cleanedValue.replace(/(\d{3})(?=\d)/g, '$1 ');
 
-    return formattedValue.trim(); // Trim in case there's an extra space at the end
+    return formattedValue.trim();
   };
 
   const handleInputChange = (e) => {
@@ -25,6 +25,7 @@ export default function PhoneNumberInput() {
       <input
         type="text"
         id="phone"
+        required
         value={phoneNumber}
         onChange={handleInputChange}
         className="p-1 w-[7rem] rounded-lg focus:outline-none border-[1px] border-[#CCCCCC] text-center"
