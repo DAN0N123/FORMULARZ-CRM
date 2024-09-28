@@ -92,7 +92,7 @@ export default function OrderForm() {
         </div>
       ) : null}
       <form
-        className="w-full h-fit bg-white p-4 rounded-lg flex flex-col gap-8"
+        className="w-full min-h-full h-fit bg-white p-4 rounded-lg flex flex-col gap-8"
         onSubmit={handleFormSubmit}
       >
         <div className="relative flex flex-col gap-1 before:absolute before:content-[''] before:w-full before:h-[2px] before:bg-[#CCCCCC] before:-bottom-4">
@@ -155,7 +155,9 @@ export default function OrderForm() {
             className="p-1 rounded-lg focus:outline-none border-[1px] border-[#CCCCCC]"
           />
         </div>
-        <PhoneNumberInput />
+        <div className="relative flex flex-col gap-1 before:absolute before:content-[''] before:w-full before:h-[2px] before:bg-[#CCCCCC] before:-bottom-4">
+          <PhoneNumberInput />
+        </div>
         <button
           className="text-xl bg-blue p-4 shadow-md rounded-lg w-fit self-center mt-[2rem]"
           onSubmit={handleFormSubmit}

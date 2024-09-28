@@ -2,13 +2,7 @@
 import { Pencil } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
-export default function Vegetable({
-  uniqueId,
-  name,
-  src,
-  initPrice,
-  packaging,
-}) {
+export default function Product({ uniqueId, name, src, initPrice, packaging }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const inputRef = useRef();
   const [price, setPrice] = useState(initPrice);
@@ -26,7 +20,7 @@ export default function Vegetable({
   return (
     <div
       key={uniqueId}
-      className="relative flex flex-col gap-2 items-center justify-end min-h-[250px] border-2 border-orange p-2 bg-white rounded-md"
+      className="relative flex flex-col gap-2 items-center justify-end min-h-[250px] border-2 border-[#f4976c90] p-2 bg-white rounded-md"
     >
       <div
         className="border-[2px] border-black rounded-lg p-1 absolute bottom-[0.5rem] right-[0.5rem] hover:bg-[#00000010]"

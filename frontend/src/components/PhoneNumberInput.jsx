@@ -20,7 +20,7 @@ export default function PhoneNumberInput() {
   };
 
   return (
-    <div className="relative flex flex-col gap-1 before:absolute before:content-[''] before:w-full before:h-[2px] before:bg-[#CCCCCC] before:-bottom-4">
+    <div className="flex flex-col gap-1">
       <label htmlFor="phone">Numer telefonu:</label>
       <input
         type="text"

@@ -22,7 +22,9 @@ export default function Navbar() {
   }, [open]);
 
   return (
-    <div className={`w-full h-[3.5rem] flex justify-start items-center p-4`}>
+    <div
+      className={`w-full h-[3.5rem] flex justify-start items-center p-4 border-b-[1px] border-[#303c6c50]`}
+    >
       <button
         onClick={() => {
           setOpen(true);
@@ -42,7 +44,7 @@ export default function Navbar() {
           <ArrowLeft color="#303c6c" width="2rem" height="2rem" />
         </button>
         <Link
-          to="/warzywa"
+          to="/produkty"
           onClick={() => {
             setOpen(false);
           }}

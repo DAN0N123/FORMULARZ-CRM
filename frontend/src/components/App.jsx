@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import Layout from './Layout';
-import Vegetables from './Vegetables';
+import Products from './Products';
 import Clients from './Clients';
 import OrderForm from './OrderForm';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -12,8 +12,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/warzywa',
-        element: <Vegetables />,
+        path: '/produkty',
+        element: <Products />,
       },
       {
         path: '/klienci',
