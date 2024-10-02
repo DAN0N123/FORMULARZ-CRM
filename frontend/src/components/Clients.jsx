@@ -1,9 +1,11 @@
-import { useState } from 'react';
-import { defaultClients } from '../constants';
+import { useEffect, useState } from 'react';
 import { CircleUserRound, Trash, CirclePlus, X } from 'lucide-react';
 import PhoneNumberInput from './PhoneNumberInput';
+import useSWR from 'swr';
+import fetcher from '../helpers/fetcher';
 export default function Clients() {
-  const [clients, setClients] = useState(defaultClients);
+  const { data } = useSWR('http://127.0.0.1:3000/clients/get', fetcher);
+  const [clients, setClients] = useState([]);
   const [formActive, setFormActive] = useState(false);
   function removeClient(client) {
     const newClients = clients.filter(
@@ -11,12 +13,15 @@ export default function Clients() {
     );
     setClients(newClients);
   }
-
+  useEffect(() => {
+    if (data != undefined) {
+      setClients(data);
+    }
+  }, [data]);
   function handleSubmit(e) {
     e.preventDefault();
     const address = document.querySelector('#address').value;
     const phone = document.querySelector('#phone').value;
-
     const newClients = [{ address, phone }, ...clients];
     setClients(newClients);
     setFormActive(false);
@@ -29,7 +34,7 @@ export default function Clients() {
         onSubmit={handleSubmit}
       >
         {formActive ? (
-          <div className="w-full  flex justify-center">
+          <div className="w-full  flex justify-center fadeIn">
             <div className="relative w-[80%] flex flex-col gap-4 p-6 bg-white shadow-lg rounded-lg">
               <button
                 className="absolute top-[0.5rem] right-[0.5rem]"
@@ -37,7 +42,7 @@ export default function Clients() {
                   setFormActive(false);
                 }}
               >
-                <X color="#00000070" />
+                <X color="#00000070" width={'1.5rem'} height={'100%'} />
               </button>
               <div className="flex flex-col gap-1">
                 <label htmlFor="address"> Adres: </label>
@@ -57,12 +62,12 @@ export default function Clients() {
           </div>
         ) : (
           <button
-            className="flex w-full items-center justify-center gap-4 bg-blue p-3 shadow-md rounded-full"
+            className="flex w-full items-center justify-center gap-4 bg-coral p-3 shadow-md rounded-full"
             onClick={() => {
               setFormActive(true);
             }}
           >
-            <CirclePlus color="#303c6c" width={'2rem'} height={'auto'} />
+            <CirclePlus color="#303c6c" width={'2rem'} height={'100%'} />
             <p className="text-xl">Dodaj stałego klienta</p>
           </button>
         )}
@@ -72,7 +77,7 @@ export default function Clients() {
           key={Math.random()}
           className="rounded-lg bg-white justify-start p-4 flex items-center gap-4"
         >
-          <CircleUserRound color="#f4976c" />
+          <CircleUserRound color="#f4976c" width={'2rem'} height={'100%'} />
           <p className="relative w-full">
             <p>{client.address}</p>
             <p>tel: {client.phone}</p>
@@ -82,7 +87,7 @@ export default function Clients() {
               removeClient(client);
             }}
           >
-            <Trash color="#F53939" width={'30px'} height={'auto'} />
+            <Trash color="#F53939" width={'30px'} height={'100%'} />
           </button>
         </div>
       ))}

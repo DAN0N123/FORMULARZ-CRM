@@ -48,7 +48,7 @@ export default function Navbar() {
           onClick={() => {
             setOpen(false);
           }}
-          className='relative w-[16rem] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:bottom-0 before:bg-darkBlue'
+          className='relative w-[16rem] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:bottom-0 before:bg-slate'
         >
           <Carrot color="#303c6c" width="2rem" height="2rem" />
           <p> Produkty </p>
@@ -58,7 +58,7 @@ export default function Navbar() {
           onClick={() => {
             setOpen(false);
           }}
-          className='relative w-[16rem] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:bottom-0 before:bg-darkBlue'
+          className='relative w-[16rem] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:bottom-0 before:bg-slate'
         >
           <UsersRound color="#303c6c" width="2rem" height="2rem" />
           <p> Klienci </p>
@@ -67,7 +67,7 @@ export default function Navbar() {
           onClick={() => {
             setOpen(false);
           }}
-          className='relative w-[16rem] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:left-[-0.125rem] before:bottom-0 before:bg-darkBlue'
+          className='relative w-[16rem] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:left-[-0.125rem] before:bottom-0 before:bg-slate'
         >
           <BookOpen color="#303c6c" width="2rem" height="2rem" />
           <p> Zamówienia </p>
@@ -77,7 +77,7 @@ export default function Navbar() {
           onClick={() => {
             setOpen(false);
           }}
-          className='relative w-[fit] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:left-[-0.125rem] before:bottom-0 before:bg-darkBlue'
+          className='relative w-[fit] p-4 flex gap-[1.5rem] hover:bg-[#303c6c10] rounded-t-xl items-center text-xl before:absolute before:content-[""] before:h-[0.125rem] before:left-0 before:w-full before:left-[-0.125rem] before:bottom-0 before:bg-slate'
         >
           <CirclePlus color="#303c6c" width="2rem" height="2rem" />
           <p> Dodaj zamówienie </p>

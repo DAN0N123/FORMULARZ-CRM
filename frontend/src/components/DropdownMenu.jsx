@@ -1,13 +1,17 @@
-export default function DropdownMenu({ options }) {
+/* eslint-disable react/prop-types */
+export default function DropdownMenu({
+  options,
+  selectedOption,
+  setSelectedOption,
+}) {
+  const handleSelection = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
   return (
     <div className="select">
-      <div
-        className="selected"
-        data-default="All"
-        data-one="option-1"
-        data-two="option-2"
-        data-three="option-3"
-      >
+      <div className="selected">
+        <p className="w-full"> {selectedOption} </p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="1em"
@@ -18,16 +22,19 @@ export default function DropdownMenu({ options }) {
         </svg>
       </div>
       <div className="options">
-        <div title="all">
-          <input id="all" name="option" type="radio" checked="" />
-          <label className="option" htmlFor="all" data-txt="Wybierz"></label>
-        </div>
         {options.map((option, index) => (
-          <div key={index} title={`${option}`} className="">
-            <input id={`option-${index + 1}`} name="option" type="radio" />
+          <div key={index} title={`${option}`}>
+            <input
+              id={`option-${index}`}
+              name="option"
+              type="radio"
+              value={option}
+              checked={selectedOption === option}
+              onChange={handleSelection}
+            />
             <label
               className="option"
-              htmlFor={`option-${index + 1}`}
+              htmlFor={`option-${index}`}
               data-txt={`${option}`}
             ></label>
           </div>

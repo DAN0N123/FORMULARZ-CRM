@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import { CirclePlus, X } from 'lucide-react';
 import PhoneNumberInput from './PhoneNumberInput';
-import { defaultProducts } from '../constants';
+import fetcher from '../helpers/fetcher';
+import useSWR from 'swr';
 export default function OrderForm() {
+  const { dbProducts } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
   const [products, setProducts] = useState([]);
 
   const [modalActive, setModalActive] = useState(false);
@@ -36,7 +38,7 @@ export default function OrderForm() {
         <div className="absolute flex inset-0 justify-center pt-[30%] w-screen h-screen">
           <div className="fixed w-[9999px] h-[9999px] top-0 left-0 backdrop-blur-sm z-[9998]"></div>
           <form
-            className="relative w-[80vw] h-[35vh] bg-white shadow-xl border-[1px] border-darkBlue rounded-lg z-[9999] p-4 pt-8 flex flex-col gap-4"
+            className="relative w-[80vw] h-[35vh] bg-white shadow-xl border-[1px] border-darkcoral rounded-lg z-[9999] p-4 pt-8 flex flex-col gap-4"
             onSubmit={handleAddProduct}
           >
             <button
@@ -60,7 +62,7 @@ export default function OrderForm() {
               >
                 <option value=""> - Wybierz z listy -</option>
                 <optgroup label="Produkty">
-                  {defaultProducts.map(({ name }, index) => (
+                  {dbProducts.map(({ name }, index) => (
                     <option value={name} key={index}>
                       {' '}
                       {name}{' '}
@@ -84,7 +86,7 @@ export default function OrderForm() {
               />
             </div>
             <div className="absolute bottom-0 left-0 w-full">
-              <button className="w-full flex justify-center items-center  h-[50px] bg-[#B4DFE550]">
+              <button className="w-full flex justify-center items-center  h-[50px] bg-[#f28a7250]">
                 Dodaj
               </button>
             </div>
@@ -112,8 +114,8 @@ export default function OrderForm() {
             }}
             className="flex ml-4 gap-2 items-center"
           >
-            <CirclePlus color="#B4DFE5" />
-            <p className="text-blue"> Dodaj Produkt</p>
+            <CirclePlus color="#f28a72" />
+            <p className="text-coral"> Dodaj Produkt</p>
           </button>
           {products.length > 0 ? (
             <p className="gap-4 p-1 grid grid-cols-4">
@@ -159,7 +161,7 @@ export default function OrderForm() {
           <PhoneNumberInput />
         </div>
         <button
-          className="text-xl bg-blue p-4 shadow-md rounded-lg w-fit self-center mt-[2rem]"
+          className="text-xl bg-coral p-4 shadow-md rounded-lg w-fit self-center mt-[2rem]"
           onSubmit={handleFormSubmit}
         >
           Dodaj zamówienie
