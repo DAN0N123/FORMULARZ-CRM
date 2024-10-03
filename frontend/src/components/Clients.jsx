@@ -7,7 +7,16 @@ export default function Clients() {
   const { data } = useSWR('http://127.0.0.1:3000/clients/get', fetcher);
   const [clients, setClients] = useState([]);
   const [formActive, setFormActive] = useState(false);
-  function removeClient(client) {
+  async function removeClient(client) {
+    try {
+      await fetcher(
+        `http://127.0.0.1:3000/clients/delete/${client._id}`,
+        'POST'
+      );
+    } catch (err) {
+      return;
+    }
+
     const newClients = clients.filter(
       (currentClient) => currentClient.address != client.address
     );
@@ -18,15 +27,23 @@ export default function Clients() {
       setClients(data);
     }
   }, [data]);
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const address = document.querySelector('#address').value;
     const phone = document.querySelector('#phone').value;
+    try {
+      await fetcher('http://127.0.0.1:3000/clients/add', 'POST', {
+        address,
+        phone,
+      });
+    } catch (err) {
+      return err;
+    }
+
     const newClients = [{ address, phone }, ...clients];
     setClients(newClients);
     setFormActive(false);
   }
-
   return (
     <div className="flex flex-col gap-4 p-6">
       <form

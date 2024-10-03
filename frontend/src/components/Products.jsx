@@ -107,13 +107,13 @@ export default function Products() {
           <p className="text-xl">Dodaj produkt</p>
         </button>
       )}
-      {products.map(({ _id, name, price, packaging, image }) => (
+      {products.map(({ _id, name, price, packagingMethod, image }) => (
         <Product
           key={_id}
           uniqueId={_id}
           name={name}
           initPrice={price}
-          packaging={packaging}
+          packaging={packagingMethod}
           src={image}
         />
       ))}
