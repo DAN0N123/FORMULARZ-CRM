@@ -1,31 +1,40 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
-import { CirclePlus, X, ClipboardList } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { CirclePlus, ClipboardList } from 'lucide-react';
 import PhoneNumberInput from './PhoneNumberInput';
 import fetcher from '../helpers/fetcher';
 import useSWR from 'swr';
 import ClientsModal from './ClientsModal';
+import ProductModal from './ProductModal';
 export default function OrderForm() {
   const { data } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
 
   const [products, setProducts] = useState([]);
-  const [currentProduct, setCurrentProduct] = useState('');
   const [productModal, setProductModal] = useState(false);
   const [clientModal, setClientModal] = useState(false);
 
-  function handleFormSubmit(e) {
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [orderNumber, setOrderNumber] = useState('');
+  async function handleFormSubmit(e) {
     e.preventDefault();
-    e.stopPropagation();
+    const body = { address, phone, products, orderNumber };
+    try {
+      const response = await fetcher(
+        'http://127.0.0.1:3000/orders/add',
+        'POST',
+        body
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  function handleChange(e) {
-    const name = e.target.value;
-    const product = data.find((product) => product.name === name);
-    setCurrentProduct(product);
+  function handleClientChoice(address, phone) {
+    setAddress(address);
+    setPhone(phone);
   }
-
-  function handleClientList(e) {}
-
   function handleAddProduct(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -43,71 +52,20 @@ export default function OrderForm() {
     setProducts([...products, productObject]);
     setProductModal(false);
   }
-
   return (
     <>
-      {clientModal ? <ClientsModal setClientModal={setClientModal} /> : null}
+      {clientModal ? (
+        <ClientsModal
+          setClientModal={setClientModal}
+          handleClientChoice={handleClientChoice}
+        />
+      ) : null}
       {productModal ? (
-        <div className="absolute flex inset-0 justify-center pt-[30%] w-screen h-screen">
-          <div className="fixed w-[9999px] h-[9999px] top-0 left-0 backdrop-blur-sm z-[9998]"></div>
-          <form
-            className="relative w-[80vw] h-[35vh] bg-white shadow-xl border-[1px] border-darkcoral rounded-lg z-[9999] p-4 pt-8 flex flex-col gap-4"
-            onSubmit={handleAddProduct}
-          >
-            <button
-              className="absolute right-2 top-2"
-              onClick={() => {
-                setProductModal(false);
-              }}
-            >
-              <X />
-            </button>
-            <div className="flex flex-col gap-2 items-center">
-              <label htmlFor="productSelect" className="text-lg">
-                {' '}
-                Produkt:{' '}
-              </label>
-              <select
-                name="productSelect"
-                id="productSelect"
-                onChange={handleChange}
-                required
-                className="w-min p-2 border-[1px] border-[#CCCCCC]"
-              >
-                <option value=""> - Wybierz z listy -</option>
-                <optgroup label="Produkty">
-                  {data.map(({ name }, index) => (
-                    <option value={name} key={index}>
-                      {' '}
-                      {name}{' '}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-            </div>
-            <div className="flex flex-col gap-2 items-center">
-              <label htmlFor="quantity" className="text-lg">
-                {' '}
-                Ilość:{' '}
-                {currentProduct ? `(${currentProduct.packagingMethod})` : ''}
-              </label>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                defaultValue={1}
-                step="0.01"
-                required
-                className="w-[100px] border-[1px] border-[#CCCCCC] p-1"
-              />
-            </div>
-            <div className="absolute bottom-0 left-0 w-full">
-              <button className="w-full flex justify-center items-center  h-[50px] bg-[#f28a7280]">
-                Dodaj
-              </button>
-            </div>
-          </form>
-        </div>
+        <ProductModal
+          data={data}
+          setProductModal={setProductModal}
+          handleAddProduct={handleAddProduct}
+        />
       ) : null}
       <form
         className="w-full min-h-full h-fit bg-white p-4 rounded-lg flex flex-col gap-8"
@@ -118,6 +76,10 @@ export default function OrderForm() {
           <input
             id="order-number"
             type="number"
+            value={orderNumber}
+            onChange={(e) => {
+              setOrderNumber(e.target.value);
+            }}
             required
             className="p-1 rounded-lg focus:outline-none border-[1px] border-[#CCCCCC] w-[100px]"
           />
@@ -125,7 +87,8 @@ export default function OrderForm() {
         <div className="relative flex flex-col gap-2 w-full before:absolute before:content-[''] before:w-full before:h-[2px] before:bg-[#CCCCCC] before:-bottom-4">
           <p> Produkty: </p>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setProductModal(true);
             }}
             className="flex ml-1 gap-2 items-center"
@@ -173,7 +136,8 @@ export default function OrderForm() {
           <label htmlFor="address"> Adres: </label>
           <div
             className="flex ml-1 mb-2 gap-2 items-center"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setClientModal(true);
             }}
           >
@@ -183,12 +147,21 @@ export default function OrderForm() {
           <input
             type="text"
             id="address"
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value);
+            }}
             required
             className="p-1 rounded-lg focus:outline-none border-[1px] border-[#CCCCCC]"
           />
         </div>
         <div className="relative flex flex-col gap-1 before:absolute before:content-[''] before:w-full before:h-[2px] before:bg-[#CCCCCC] before:-bottom-4">
-          <PhoneNumberInput />
+          <PhoneNumberInput
+            value={phone}
+            change={(value) => {
+              setPhone(value);
+            }}
+          />
         </div>
         <button
           className="text-xl bg-coral p-4 shadow-md rounded-lg w-fit self-center mt-[2rem]"

@@ -11,7 +11,11 @@ export default async function fetcher(ENDPOINT, method = 'GET', body = null) {
 
     if (!data.ok) throw data;
 
-    return data.result;
+    if (data.result) {
+      return data.result;
+    } else {
+      if (data.message) return data.message;
+    }
   } catch (err) {
     throw new Error(err);
   }

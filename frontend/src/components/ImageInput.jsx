@@ -21,6 +21,7 @@ export default function ImageInput({ label, file, setFile }) {
         type="file"
         id="file"
         className="file-input hidden"
+        accept=".png, .jpg, .jpeg"
         onChange={handleFileChange}
       />
       <label

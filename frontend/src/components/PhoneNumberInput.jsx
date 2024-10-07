@@ -1,8 +1,5 @@
-import { useState } from 'react';
-
-export default function PhoneNumberInput() {
-  const [phoneNumber, setPhoneNumber] = useState('');
-
+/* eslint-disable react/prop-types */
+export default function PhoneNumberInput({ value = '', change }) {
   const formatPhoneNumber = (value) => {
     // Remove all non-digit characters from the input
     const cleanedValue = value.replace(/\D/g, '').slice(0, 9);
@@ -16,7 +13,7 @@ export default function PhoneNumberInput() {
   const handleInputChange = (e) => {
     const value = e.target.value;
     const formattedValue = formatPhoneNumber(value);
-    setPhoneNumber(formattedValue);
+    change(formattedValue);
   };
 
   return (
@@ -26,7 +23,7 @@ export default function PhoneNumberInput() {
         type="text"
         id="phone"
         required
-        value={phoneNumber}
+        value={value}
         onChange={handleInputChange}
         className="p-1 w-[7rem] rounded-lg focus:outline-none border-[1px] border-[#CCCCCC] text-center"
       />
