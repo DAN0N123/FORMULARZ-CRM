@@ -4,6 +4,7 @@ import Layout from './Layout';
 import Products from './Products';
 import Clients from './Clients';
 import OrderForm from './OrderForm';
+import Orders from './Orders';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: '/formularz',
         element: <OrderForm />,
+      },
+      {
+        path: '/zamówienia',
+        element: <Orders />,
       },
     ],
   },

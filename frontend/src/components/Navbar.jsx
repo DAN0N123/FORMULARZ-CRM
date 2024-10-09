@@ -63,7 +63,8 @@ export default function Navbar() {
           <UsersRound color="#303c6c" width="2rem" height="2rem" />
           <p> Klienci </p>
         </Link>
-        <div
+        <Link
+          to="/zamówienia"
           onClick={() => {
             setOpen(false);
           }}
@@ -71,7 +72,7 @@ export default function Navbar() {
         >
           <BookOpen color="#303c6c" width="2rem" height="2rem" />
           <p> Zamówienia </p>
-        </div>
+        </Link>
         <Link
           to="/formularz"
           onClick={() => {

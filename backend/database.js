@@ -23,7 +23,8 @@ const orderSchema = new mongoose.Schema({
   orderNumber: Number,
   address: String,
   phone: String,
-  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+  datetime: String,
+  products: [Object],
 });
 
 const Product = connection.model('Product', productSchema);

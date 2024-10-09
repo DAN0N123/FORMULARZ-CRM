@@ -17,6 +17,9 @@ router.post('/add', [
         .json({ ok: false, message: 'Wprowadź poprawne dane' });
     }
     const orderNumber = req.body.orderNumber;
+    const address = req.body.address;
+    const phone = req.body.phone;
+    const products = req.body.products;
     const orderNumberCheck = await Order.findOne({
       orderNumber: orderNumber,
     }).exec();
@@ -27,8 +30,37 @@ router.post('/add', [
       });
     }
 
-    console.log(orderNumber, address, phone, products);
+    const newOrder = new Order({ address, orderNumber, products, phone });
+
+    try {
+      newOrder.save();
+      return res.json({
+        ok: true,
+        message: 'Pomyślnie dodano nowe zamówienie',
+      });
+    } catch (err) {
+      return res.json({
+        ok: false,
+        message: 'Wystąpił problem przy dodawaniu nowego zamówienia',
+      });
+    }
   }),
 ]);
+
+router.get(
+  '/get',
+  asyncHandler(async (req, res) => {
+    try {
+      const allOrders = await Order.find().exec();
+      return res.json({ ok: true, result: allOrders });
+    } catch (err) {
+      return res.json({
+        ok: false,
+        error: err,
+        message: 'Wystąpił problem przy zwracaniu zamówień. Odśwież stronę',
+      });
+    }
+  })
+);
 
 module.exports = router;
