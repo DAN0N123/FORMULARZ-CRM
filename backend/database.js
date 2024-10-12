@@ -23,7 +23,8 @@ const orderSchema = new mongoose.Schema({
   orderNumber: Number,
   address: String,
   phone: String,
-  datetime: String,
+  date: String,
+  time: String,
   products: [Object],
 });
 

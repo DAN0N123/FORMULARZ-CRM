@@ -14,6 +14,11 @@ import 'dayjs/locale/pl';
 import dayjs from 'dayjs';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import Big from 'big.js';
+
+Big.DP = 2;
+Big.RM = Big.roundHalfUp;
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -73,14 +78,19 @@ export default function OrderForm() {
   async function handleFormSubmit(e) {
     e.preventDefault();
     const productsNoTotal = products.map(({ total, ...rest }) => rest);
-    let datetime;
-    if (date && time) {
-      datetime = date.set('hour', time.hour()).set('minute', time.minute());
-    } else {
+    if (!(date && time)) {
       return console.log('Please select both date and time.');
     }
-    const formattedDatetime = datetime.format('YYYY-MM-DD HH:mm');
-    const body = { address, phone, products: productsNoTotal, orderNumber };
+    const formattedDate = date.format('DD-MM-YYYY');
+    const formattedTime = time.format('HH:mm');
+    const body = {
+      address,
+      phone,
+      products: productsNoTotal,
+      orderNumber,
+      date: formattedDate,
+      time: formattedTime,
+    };
     try {
       const response = await fetcher(
         'http://127.0.0.1:3000/orders/add',
@@ -98,6 +108,8 @@ export default function OrderForm() {
     setAddress('');
     setPhone('');
     setOrderNumber('');
+    setDate(null);
+    setTime(null);
   }
 
   function handleClientChoice(address, phone) {
@@ -115,7 +127,6 @@ export default function OrderForm() {
       name,
       quantity: quantity,
       price: product.price,
-      total: Math.round(quantity * product.price * 100) / 100,
       packagingMethod: product.packagingMethod,
     };
     setProducts([...products, productObject]);
@@ -137,7 +148,7 @@ export default function OrderForm() {
         />
       ) : null}
       <form
-        className="w-full min-h-full h-fit bg-white p-4 rounded-lg flex flex-col gap-8"
+        className="w-full h-fit bg-white p-4 rounded-lg flex flex-col gap-8 pb-12"
         onSubmit={handleFormSubmit}
       >
         <div className="relative flex flex-col gap-1 before:absolute before:content-[''] before:w-full before:h-[2px] before:bg-[#CCCCCC] before:-bottom-4">
@@ -166,36 +177,37 @@ export default function OrderForm() {
             <p className="text-coral"> Dodaj Produkt</p>
           </button>
           {products.length > 0 ? (
-            <p className="gap-4 p-1 grid grid-cols-4">
-              <p> Nazwa: </p>
-              <p> Cena: </p>
-              <p> Ilość: </p>
-              <p> Łącznie: </p>
+            <p className="gap-4 p-1 grid grid-cols-5">
+              <p className="col-start-1 col-end-3"> Nazwa: </p>
+              <p className="col-start-3 col-end-4"> Cena: </p>
+              <p className="col-start-4 col-end-5"> Ilość: </p>
             </p>
           ) : null}
 
-          {products.map(
-            ({ name, price, quantity, total, packagingMethod }, index) => (
-              <div
-                key={index}
-                className="border-[1px] rounded-md p-1 gap-4 grid grid-cols-4 content-center"
-              >
-                <p> {name} </p>
-                <p> {price} </p>
-                <p>
-                  {' '}
-                  {quantity} ({packagingMethod})
-                </p>
-                <p> {total} zł </p>
-              </div>
-            )
-          )}
+          {products.map(({ name, price, quantity, packagingMethod }, index) => (
+            <div
+              key={index}
+              className="border-[1px] rounded-md p-1 gap-4 grid grid-cols-5 content-center"
+            >
+              <p className="col-start-1 col-end-3"> {name} </p>
+              <p className="col-start-3 col-end-4"> {price} zł</p>
+              <p className="col-start-4 col-end-6">
+                {' '}
+                {quantity} ({packagingMethod})
+              </p>
+            </div>
+          ))}
           {products.length > 0 ? (
             <div className="gap-4 p-1 flex w-full justify-end">
               <p className="border-[1px] p-1 rounded-md flex gap-2">
                 <p> Suma: </p>
                 <p>
-                  {products.reduce((acc, product) => acc + product.total, 0)} zł
+                  {products.reduce(
+                    (acc, product) =>
+                      acc + Number(Big(product.quantity).times(product.price)),
+                    0
+                  )}{' '}
+                  zł
                 </p>
               </p>
             </div>

@@ -5,6 +5,7 @@ import Products from './Products';
 import Clients from './Clients';
 import OrderForm from './OrderForm';
 import Orders from './Orders';
+import OrderDetails from './OrderDetails';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: '/zamówienia',
         element: <Orders />,
+      },
+      {
+        path: '/zamówienie/:id',
+        element: <OrderDetails />,
       },
     ],
   },
