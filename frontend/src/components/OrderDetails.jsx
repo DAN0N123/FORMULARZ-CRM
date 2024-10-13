@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Confirm from './Confirm';
 import { useNavigate } from 'react-router-dom';
 import Big from 'big.js';
-
+import EditForm from './EditForm';
 Big.DP = 2;
 Big.RM = Big.roundHalfUp;
 
@@ -16,6 +16,7 @@ export default function OrderDetails() {
     `http://127.0.0.1:3000/orders/get/${id}`,
     fetcher
   );
+  const [editing, setEditing] = useState(false);
   const [confirmWindow, setConfirmWindow] = useState(false);
   const navigate = useNavigate();
   if (isLoading) {
@@ -37,7 +38,9 @@ export default function OrderDetails() {
       console.log(err);
     }
   }
-
+  if (editing && data) {
+    return <EditForm order={data} />;
+  }
   return (
     <div className="relative w-full h-fit p-4">
       {confirmWindow ? (
@@ -115,7 +118,12 @@ export default function OrderDetails() {
             </div>
           ) : null}
           <div className="mt-4 flex gap-4">
-            <button className="bg-slate rounded-2xl flex-grow p-3 flex justify-center items-center">
+            <button
+              className="bg-slate rounded-2xl flex-grow p-3 flex justify-center items-center"
+              onClick={() => {
+                setEditing(true);
+              }}
+            >
               <p className="text-white text-lg">Edytuj</p>
             </button>
             <button

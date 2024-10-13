@@ -8,8 +8,8 @@ const { body, validationResult, check } = require('express-validator');
 router.post('/add', [
   body('orderNumber').trim().isLength({ min: 1 }),
   body('address').trim().isLength({ min: 1 }),
-  body('date').trim().isLength({ min: 1 }),
-  body('time').trim().isLength({ min: 1 }),
+  body('date').isDate(),
+  body('time').isDate(),
   body('phone').trim().isLength({ min: 11 }),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
@@ -57,6 +57,36 @@ router.post('/add', [
     }
   }),
 ]);
+
+router.put(
+  '/edit/:id',
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    try {
+      const orderNumber = req.body.orderNumber;
+      const orderNumberCheck = await Order.findOne({
+        orderNumber: orderNumber,
+      }).exec();
+      if (orderNumberCheck) {
+        return res.json({
+          ok: false,
+          message: 'Zamówienie o tym numerze już istnieje',
+        });
+      }
+      const order = await Order.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
+
+      if (!order) {
+        throw new Error('To zamówienie nie istnieje');
+      }
+
+      return res.json({ ok: true, message: 'Pomyślnie zmieniono zamówienie' });
+    } catch (error) {
+      return res.status(500).json({ ok: false, message: error.message });
+    }
+  })
+);
 
 router.post(
   '/remove/:id',

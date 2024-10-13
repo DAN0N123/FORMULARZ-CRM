@@ -28,6 +28,9 @@ const orderSchema = new mongoose.Schema({
   products: [Object],
 });
 
+orderSchema.set('toJSON', { virtuals: true });
+orderSchema.set('toObject', { virtuals: true });
+
 const Product = connection.model('Product', productSchema);
 const Client = connection.model('Client', clientSchema);
 const Order = connection.model('Order', orderSchema);

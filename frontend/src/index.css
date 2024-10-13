@@ -422,7 +422,7 @@ button::-moz-focus-inner {
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  animation: slideIn 500ms linear;
+  animation: slideInY 500ms linear;
 }
 
 .header {
@@ -505,17 +505,55 @@ button::-moz-focus-inner {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-@keyframes slideIn {
+@keyframes slideInX {
   0% {
-    transform: translateX(-200%);
+    transform: translateX(-100%);
   }
   50% {
-    transform: translateX(5%);
+    transform: translateX(2%);
   }
   75% {
-    transform: translateX(-5%);
+    transform: translateX(-2%);
   }
   100% {
     transform: translateX(0);
+  }
+}
+
+@keyframes slideInY {
+  0% {
+    transform: translateY(-200%);
+  }
+  50% {
+    transform: translateY(5%);
+  }
+  75% {
+    transform: translateY(-5%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* .slideInX {
+  animation: slideInX 300ms linear;
+}
+
+.fadeIn {
+  animation: fadeIn 250ms linear;
+} */
+
+.alertAnimation {
+  animation-name: slideInX, fadeIn;
+  animation-duration: 400ms, 550ms;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

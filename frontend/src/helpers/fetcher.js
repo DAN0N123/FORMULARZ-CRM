@@ -1,22 +1,18 @@
 export default async function fetcher(ENDPOINT, method = 'GET', body = null) {
-  try {
-    const response = await fetch(ENDPOINT, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body ? JSON.stringify(body) : null,
-    });
-    const data = await response.json();
+  const response = await fetch(ENDPOINT, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : null,
+  });
+  const data = await response.json();
 
-    if (!data.ok) throw data.message;
+  if (!data.ok) throw data.message;
 
-    if (data.result) {
-      return data.result;
-    } else {
-      return data.message;
-    }
-  } catch (err) {
-    throw new Error(err);
+  if (data.result) {
+    return data.result;
+  } else {
+    return data.message;
   }
 }

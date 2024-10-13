@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from 'react';
 import { CirclePlus, ClipboardList } from 'lucide-react';
@@ -16,9 +17,30 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Big from 'big.js';
 import { AlertContext } from '../misc/AlertContext';
-
+import {
+  parse,
+  setHours,
+  setMinutes,
+  setSeconds,
+  setMilliseconds,
+} from 'date-fns';
 Big.DP = 2;
 Big.RM = Big.roundHalfUp;
+
+function convertToDateAndTimeObjects(dateStr, timeStr) {
+  // Parse the date part
+  const dateObject = dayjs(dateStr, 'DD-MM-YYYY');
+
+  // Parse the time part
+  const [hours, minutes] = timeStr.split(':');
+  const timeObject = dayjs()
+    .hour(parseInt(hours, 10))
+    .minute(parseInt(minutes, 10))
+    .second(0)
+    .millisecond(0);
+
+  return { dateObject, timeObject };
+}
 
 const theme = createTheme({
   palette: {
@@ -54,29 +76,38 @@ const theme = createTheme({
   },
 });
 
-export default function OrderForm() {
+export default function EditForm({ order }) {
   const { data } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(order.products);
   const [productModal, setProductModal] = useState(false);
   const [clientModal, setClientModal] = useState(false);
 
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
-  const [orderNumber, setOrderNumber] = useState('');
+  const [address, setAddress] = useState(order.address);
+  const [phone, setPhone] = useState(order.phone);
+  const [orderNumber, setOrderNumber] = useState(order.orderNumber);
 
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
 
+  useEffect(() => {
+    if (order) {
+      const { dateObject, timeObject } = convertToDateAndTimeObjects(
+        order.date,
+        order.time
+      );
+      setDate(dateObject);
+      setTime(timeObject);
+    }
+  }, [order]);
+
   const { addAlert } = useContext(AlertContext);
 
   const handleDateChange = (newDate) => {
-    console.log(newDate);
     setDate(newDate);
   };
 
   const handleTimeChange = (newTime) => {
-    console.log(newTime);
     setTime(newTime);
   };
 
@@ -98,8 +129,8 @@ export default function OrderForm() {
     };
     try {
       const response = await fetcher(
-        'http://127.0.0.1:3000/orders/add',
-        'POST',
+        `http://127.0.0.1:3000/orders/edit/${order._id}`,
+        'PUT',
         body
       );
       resetForm();
