@@ -9,12 +9,12 @@ export default async function fetcher(ENDPOINT, method = 'GET', body = null) {
     });
     const data = await response.json();
 
-    if (!data.ok) throw data;
+    if (!data.ok) throw data.message;
 
     if (data.result) {
       return data.result;
     } else {
-      if (data.message) return data.message;
+      return data.message;
     }
   } catch (err) {
     throw new Error(err);

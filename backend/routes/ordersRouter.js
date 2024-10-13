@@ -64,13 +64,9 @@ router.post(
     const id = req.params.id;
     try {
       const order = await Order.findByIdAndDelete(id).exec();
-      if (order) {
-        return res.json({ ok: true, message: 'Pomyślnie usunięto zamówienie' });
-      } else {
-        throw new Error('To zamówienie nie istnieje.');
-      }
+      return res.json({ ok: true, message: 'Pomyślnie usunięto zamówienie' });
     } catch (err) {
-      return res.json({
+      return res.status(500).json({
         ok: false,
         message: 'Wystąpił problem przy usuwaniu zamówienia',
         error: err,

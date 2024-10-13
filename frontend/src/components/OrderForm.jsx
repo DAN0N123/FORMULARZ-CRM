@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CirclePlus, ClipboardList } from 'lucide-react';
 import PhoneNumberInput from './PhoneNumberInput';
 import fetcher from '../helpers/fetcher';
@@ -13,8 +13,9 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import 'dayjs/locale/pl';
 import dayjs from 'dayjs';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { useNavigate } from 'react-router-dom';
 import Big from 'big.js';
+import { AlertContext } from '../misc/AlertContext';
 
 Big.DP = 2;
 Big.RM = Big.roundHalfUp;
@@ -55,7 +56,7 @@ const theme = createTheme({
 
 export default function OrderForm() {
   const { data } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
-
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [productModal, setProductModal] = useState(false);
   const [clientModal, setClientModal] = useState(false);
@@ -66,6 +67,8 @@ export default function OrderForm() {
 
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
+
+  const { addAlert } = useContext(AlertContext);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
@@ -98,6 +101,8 @@ export default function OrderForm() {
         body
       );
       resetForm();
+      addAlert('success', response);
+      navigate('/zamówienia');
     } catch (err) {
       console.log(err);
     }

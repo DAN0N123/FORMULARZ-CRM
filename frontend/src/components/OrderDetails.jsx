@@ -59,7 +59,7 @@ export default function OrderDetails() {
           {' '}
           Zamówienie numer: {data.orderNumber}
         </p>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 w-full">
           <div className="flex gap-2 items-center">
             <MapPin color="#f28a72" width={'30px'} height={'auto'} />
             <p className="text-lg">{data.address} </p>
@@ -77,7 +77,7 @@ export default function OrderDetails() {
             <p className="text-lg"> {data.time} </p>
           </div>
           {data.products.length > 0 ? (
-            <p className="gap-4 p-1 grid grid-cols-5">
+            <p className="gap-4 p-1 grid grid-cols-5 w-full">
               <p className="col-start-1 col-end-3"> Nazwa: </p>
               <p className="col-start-3 col-end-4"> Cena: </p>
               <p className="col-start-4 col-end-5"> Ilość: </p>

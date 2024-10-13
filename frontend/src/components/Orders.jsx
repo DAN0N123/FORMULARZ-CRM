@@ -3,7 +3,7 @@ import fetcher from '../helpers/fetcher';
 import { useEffect, useState } from 'react';
 import { MapPin, Phone, Trash2, CalendarDays, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
+import Confirm from './Confirm';
 // coral: '#f28a72',
 // slate: '#6b7a8f',
 
@@ -13,6 +13,7 @@ export default function Orders() {
     fetcher
   );
   const [orders, setOrders] = useState([]);
+  const [removingOrder, setRemovingOrder] = useState(null);
   useEffect(() => {
     if (data) {
       const sortedOrders = data.sort((a, b) => b.orderNumber - a.orderNumber);
@@ -20,10 +21,33 @@ export default function Orders() {
     }
   }, [data]);
 
-  if (isLoading) return <div> Loading... </div>;
+  async function removeOrder(id) {
+    try {
+      await fetcher(`http://127.0.0.1:3000/orders/remove/${id}`, 'POST');
 
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  if (isLoading) return <div> Loading... </div>;
   return (
-    <div className="flex flex-col gap-4 p-8">
+    <div className="relative flex flex-col gap-4 p-8">
+      {removingOrder ? (
+        <Confirm
+          action={'Usuń zamówienie'}
+          description={
+            'Czy na pewno chcesz usunąć zamówienie? Ta czynność nie może być cofnięta.'
+          }
+          cancel={() => {
+            setRemovingOrder(null);
+          }}
+          confirm={() => {
+            removeOrder(removingOrder);
+          }}
+        />
+      ) : null}
       {orders.map(({ _id, address, phone, orderNumber, date, time }) => (
         <Link
           to={`/zamówienie/${_id}`}
@@ -52,7 +76,14 @@ export default function Orders() {
               <p> {time} </p>
             </div>
           </div>
-          <div className="bg-[#E74D4D] rounded-full p-2 self-end absolute right-[0.5rem] bottom-[0.5rem] ">
+          <div
+            className="bg-[#E74D4D] rounded-full p-2 self-end absolute right-[0.5rem] bottom-[0.5rem]"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setRemovingOrder(_id);
+            }}
+          >
             <Trash2 color="white" width={'20px'} height={'auto'} />
           </div>
         </Link>
