@@ -1,20 +1,47 @@
 /* eslint-disable react/prop-types */
-import { Pencil } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
-
+import { Pencil, Trash2 } from 'lucide-react';
+import { useState, useRef, useEffect, useContext } from 'react';
+import fetcher from '../helpers/fetcher';
+import { AlertContext } from '../misc/AlertContext.jsx';
 export default function Product({ uniqueId, name, src, initPrice, packaging }) {
+  const { addAlert } = useContext(AlertContext);
   const [isEditMode, setIsEditMode] = useState(false);
   const inputRef = useRef();
   const [price, setPrice] = useState(initPrice);
-
+  const formRef = useRef(null);
   useEffect(() => {
     if (isEditMode) {
       inputRef.current.focus();
     }
   }, [isEditMode]);
 
-  function handleEditSubmit(e) {
-    e.preventDefault();
+  async function removeProduct() {
+    try {
+      const response = await fetcher(
+        `http://127.0.0.1:3000/products/delete/${uniqueId}`,
+        'POST'
+      );
+      addAlert('success', response);
+    } catch (err) {
+      addAlert('error', err.message);
+    }
+    window.location.reload();
+  }
+
+  async function handleEditSubmit(e = null) {
+    if (e) e.preventDefault();
+    if (price === initPrice) return;
+    const body = { price: price };
+    try {
+      const response = await fetcher(
+        `http://127.0.0.1:3000/products/edit/${uniqueId}`,
+        'PUT',
+        body
+      );
+      addAlert('success', response);
+    } catch (err) {
+      addAlert('error', err.message);
+    }
     setIsEditMode(false);
   }
   return (
@@ -22,9 +49,25 @@ export default function Product({ uniqueId, name, src, initPrice, packaging }) {
       key={uniqueId}
       className="relative flex flex-col gap-2 items-center justify-end min-h-[250px] border-2 border-[#6b7a8f] p-2 bg-white rounded-md"
     >
+      {isEditMode ? (
+        <div
+          className="bg-[#E74D4D] border-[2px] border-[#E74D4D] rounded-lg p-1 self-end absolute right-[0.5rem] top-[0.5rem]"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            removeProduct();
+          }}
+        >
+          <Trash2 color="white" width={'20px'} height={'auto'} />
+        </div>
+      ) : null}
       <div
         className="border-[2px] border-black rounded-lg p-1 absolute bottom-[0.5rem] right-[0.5rem] hover:bg-[#00000010]"
         onClick={() => {
+          if (isEditMode) {
+            handleEditSubmit();
+          }
+
           setIsEditMode(!isEditMode);
         }}
       >
@@ -35,7 +78,11 @@ export default function Product({ uniqueId, name, src, initPrice, packaging }) {
       )}
       <p className="text-xl font-bold text-center">{name}</p>
       {isEditMode ? (
-        <form className="text-lg flex gap-1" onSubmit={handleEditSubmit}>
+        <form
+          className="text-lg flex gap-1"
+          ref={formRef}
+          onSubmit={handleEditSubmit}
+        >
           <div className="relative flex">
             <input
               ref={inputRef}

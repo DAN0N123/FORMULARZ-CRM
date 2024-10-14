@@ -30,7 +30,7 @@ export default function Orders() {
       console.log(err);
     }
   }
-  console.log(orders);
+
   if (isLoading) return <div> Loading... </div>;
   return (
     <div className="relative flex flex-col gap-4 p-8">

@@ -13,6 +13,35 @@ router.get(
   })
 );
 
+router.put('/edit/:id', [
+  body('price').trim().isLength({ min: 1 }),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
+        ok: false,
+        error: errors,
+        message: 'Wprowadź poprawne dane',
+      });
+    }
+    const id = req.params.id;
+    try {
+      const editedProduct = await Product.findByIdAndUpdate(id, {
+        price: req.body.price,
+      }).exec();
+      if (!editedProduct) {
+        return res.json({
+          ok: false,
+          message: 'Nie znaleziono tego produktu w bazie danych',
+        });
+      }
+      return res.json({ ok: true, message: 'Pomyślnie zmieniono produkt' });
+    } catch (err) {
+      return res.status(500).json({ ok: false, message: err.message });
+    }
+  }),
+]);
+
 router.post('/add', [
   body('name').trim().isLength({ min: 1 }),
   body('price').trim().isLength({ min: 1 }),
@@ -44,5 +73,24 @@ router.post('/add', [
     }
   }),
 ]);
+
+router.post(
+  '/delete/:id',
+  asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    try {
+      const deletedProduct = await Product.findByIdAndDelete(id).exec();
+      if (!deletedProduct) {
+        return res.json({
+          ok: false,
+          message: 'Wystąpił problem przy usuwaniu produktu',
+        });
+      }
+      return res.json({ ok: true, message: 'Pomyślnie usunięto produkt' });
+    } catch (err) {
+      return res.status(500).json({ ok: false, message: err.message });
+    }
+  })
+);
 
 module.exports = router;

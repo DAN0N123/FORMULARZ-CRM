@@ -80,7 +80,7 @@ export default function EditForm({ order }) {
   const { data } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
   const navigate = useNavigate();
   const [products, setProducts] = useState(order.products);
-  const [productModal, setProductModal] = useState(false);
+  const [productModal, setProductModal] = useState(true);
   const [clientModal, setClientModal] = useState(false);
 
   const [address, setAddress] = useState(order.address);
@@ -126,6 +126,7 @@ export default function EditForm({ order }) {
       orderNumber,
       date: formattedDate,
       time: formattedTime,
+      originalOrderNumber: order.orderNumber,
     };
     try {
       const response = await fetcher(
@@ -206,6 +207,7 @@ export default function EditForm({ order }) {
           <p> Produkty: </p>
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               setProductModal(true);
             }}

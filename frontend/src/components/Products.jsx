@@ -33,7 +33,10 @@ export default function Products() {
   return (
     <div className="w-full box-border grid grid-cols-1 gap-4 p-4 no-scrollbar overflow-y-auto">
       {formActive ? (
-        <NewProductForm handleAddProduct={handleAddProduct} />
+        <NewProductForm
+          handleAddProduct={handleAddProduct}
+          setFormActive={setFormActive}
+        />
       ) : (
         <button
           className="flex w-full items-center justify-center gap-4 bg-[#f28a72] p-3 shadow-md rounded-full"
