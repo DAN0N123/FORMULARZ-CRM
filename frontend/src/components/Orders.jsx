@@ -33,7 +33,7 @@ export default function Orders() {
 
   if (isLoading) return <div> Loading... </div>;
   return (
-    <div className="relative flex flex-col gap-4 p-8">
+    <div className="relative flex flex-col gap-4 p-8 tablet:grid  tablet:grid-cols-2 tablet:auto-rows-fr">
       {removingOrder ? (
         <Confirm
           action={'Usuń zamówienie'}
@@ -52,7 +52,7 @@ export default function Orders() {
         <Link
           to={`/zamówienie/${_id}`}
           key={_id}
-          className="relative w-full h-fit bg-white rounded-lg shadow-xl flex flex-col gap-4 items-start p-4"
+          className="relative w-full h-fit bg-white rounded-lg shadow-xl flex flex-col gap-4 items-start p-4 tablet:max-w-[400px] tablet:h-full"
         >
           <p className="self-center text-xl">
             {' '}
