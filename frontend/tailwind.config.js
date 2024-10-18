@@ -13,7 +13,11 @@ export default {
       coral: '#f28a72',
       slate: '#6b7a8f',
     },
-    extend: {},
+    extend: {
+      screens: {
+        tablet: '600px',
+      },
+    },
   },
   plugins: [],
 };
