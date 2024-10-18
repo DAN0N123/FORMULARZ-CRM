@@ -1,0 +1,12 @@
+{
+  "services": {
+    "backend": {
+      "build": "cd backend && npm install",
+      "start": "cd backend && npm start"
+    },
+    "frontend": {
+      "build": "cd frontend && npm install && npm run build",
+      "start": "cd frontend && npm start"
+    }
+  }
+}

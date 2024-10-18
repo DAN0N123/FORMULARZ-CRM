@@ -8,11 +8,12 @@ const { body, validationResult, check } = require('express-validator');
 router.post('/add', [
   body('orderNumber').trim().isLength({ min: 1 }),
   body('address').trim().isLength({ min: 1 }),
-  body('date').isDate(),
-  body('time').isDate(),
+  body('date').trim().isLength({ min: 1 }),
+  body('time').trim().isLength({ min: 1 }),
   body('phone').trim().isLength({ min: 11 }),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
+    console.log(errors);
     if (!errors.isEmpty()) {
       return res
         .status(500)

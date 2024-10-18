@@ -74,7 +74,11 @@ export default function Product({ uniqueId, name, src, initPrice, packaging }) {
         <Pencil width={'20px'} height={'auto'} />
       </div>
       {src != null && (
-        <img src={src} className="h-[150px] w-auto object-cover" />
+        <img
+          src={src}
+          className="h-[150px] w-auto object-cover"
+          referrerPolicy="no-referrer"
+        />
       )}
       <p className="text-xl font-bold text-center">{name}</p>
       {isEditMode ? (

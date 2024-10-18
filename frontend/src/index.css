@@ -557,3 +557,14 @@ button::-moz-focus-inner {
     opacity: 1;
   }
 }
+
+@media print {
+  .dontPrint {
+    display: none;
+  }
+
+  body {
+    font-size: 14px;
+    margin: 0;
+  }
+}

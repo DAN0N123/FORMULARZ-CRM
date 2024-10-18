@@ -96,6 +96,7 @@ export default function OrderForm() {
       date: formattedDate,
       time: formattedTime,
     };
+
     try {
       const response = await fetcher(
         'http://127.0.0.1:3000/orders/add',
@@ -209,10 +210,12 @@ export default function OrderForm() {
               <p className="border-[1px] p-1 rounded-md flex gap-2">
                 <p> Suma: </p>
                 <p>
-                  {products.reduce(
-                    (acc, product) =>
-                      acc + Number(Big(product.quantity).times(product.price)),
-                    0
+                  {String(
+                    products.reduce(
+                      (acc, product) =>
+                        acc.add(Big(product.quantity).times(product.price)),
+                      Big(0)
+                    )
                   )}{' '}
                   zł
                 </p>

@@ -38,6 +38,11 @@ export default function OrderDetails() {
       console.log(err);
     }
   }
+
+  function handlePrint() {
+    window.print();
+  }
+
   if (editing && data) {
     return <EditForm order={data} />;
   }
@@ -94,7 +99,7 @@ export default function OrderDetails() {
                 className="border-[2px] border-slate rounded-md p-1 gap-4 grid grid-cols-5 content-center"
               >
                 <p className="col-start-1 col-end-3"> {name} </p>
-                <p className="col-start-3 col-end-4"> {price} </p>
+                <p className="col-start-3 col-end-4"> {price} zł</p>
                 <p className="col-start-4 col-end-6">
                   {' '}
                   {quantity} ({packagingMethod})
@@ -117,7 +122,7 @@ export default function OrderDetails() {
               </p>
             </div>
           ) : null}
-          <div className="mt-4 flex gap-4">
+          <div className="mt-4 flex gap-4 dontPrint">
             <button
               className="bg-slate rounded-2xl flex-grow p-3 flex justify-center items-center"
               onClick={() => {
@@ -135,6 +140,12 @@ export default function OrderDetails() {
               <p className="text-white text-lg">Usuń</p>
             </button>
           </div>
+          <button
+            className="bg-slate rounded-2xl flex-grow p-3 flex justify-center items-center dontPrint"
+            onClick={handlePrint}
+          >
+            <p className="text-white text-lg">Drukuj</p>
+          </button>
         </div>
       </div>
     </div>

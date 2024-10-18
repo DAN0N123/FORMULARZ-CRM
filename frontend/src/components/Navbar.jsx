@@ -23,7 +23,7 @@ export default function Navbar() {
 
   return (
     <div
-      className={`w-full h-[3.5rem] flex justify-start items-center p-4 border-b-[1px] border-[#303c6c50]`}
+      className={`dontPrint w-full h-[3.5rem] flex justify-start items-center p-4 border-b-[1px] border-[#303c6c50]`}
     >
       <button
         onClick={() => {

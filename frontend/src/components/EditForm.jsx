@@ -324,7 +324,7 @@ export default function EditForm({ order }) {
           className="text-xl bg-coral p-4 shadow-md rounded-lg w-fit self-center mt-[2rem]"
           onSubmit={handleFormSubmit}
         >
-          Dodaj zamówienie
+          Edytuj zamówienie
         </button>
       </form>
     </>
