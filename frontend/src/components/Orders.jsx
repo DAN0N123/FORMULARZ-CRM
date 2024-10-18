@@ -33,12 +33,12 @@ export default function Orders() {
 
   if (isLoading) return <div> Loading... </div>;
   return (
-    <div className="relative flex flex-col gap-4 p-8 tablet:grid  tablet:grid-cols-2 tablet:auto-rows-fr">
+    <div className="relative flex flex-col gap-4 p-8 tablet:grid  pb-[4rem] tablet:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] tablet:justify-items-center">
       {removingOrder ? (
         <Confirm
           action={'Usuń zamówienie'}
           description={
-            'Czy na pewno chcesz usunąć zamówienie? Ta czynność nie może być cofnięta.'
+            'Czy na pewno chcesz usunąć zamówienie? Ta czynność jest nieodwracalna.'
           }
           cancel={() => {
             setRemovingOrder(null);

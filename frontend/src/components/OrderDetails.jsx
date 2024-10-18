@@ -125,7 +125,9 @@ export default function OrderDetails() {
           <div className="mt-4 flex gap-4 dontPrint">
             <button
               className="bg-slate rounded-2xl flex-grow p-3 flex justify-center items-center"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
                 setEditing(true);
               }}
             >

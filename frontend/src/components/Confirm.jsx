@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 export default function Confirm({ action, description, cancel, confirm }) {
   return (
-    <div className="absolute flex inset-0 justify-center pt-[30%] w-screen h-fit ">
+    <div className="fixed flex inset-0 justify-center pt-[30%] w-screen h-fit z-[9999]">
       <div className="fixed w-[9999px] h-[9999px] top-0 left-0 backdrop-blur-sm bg-[#00000010] z-[9998]"></div>
-      <div className="card z-[9999]">
+      <div className="card z-[9999] ">
         <div className="header">
           <div className="image">
             <svg

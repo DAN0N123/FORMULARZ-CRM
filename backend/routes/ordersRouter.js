@@ -98,7 +98,11 @@ router.post(
     const id = req.params.id;
     try {
       const order = await Order.findByIdAndDelete(id).exec();
-      return res.json({ ok: true, message: 'Pomyślnie usunięto zamówienie' });
+      if (order) {
+        return res.json({ ok: true, message: 'Pomyślnie usunięto zamówienie' });
+      } else {
+        throw new Error('To zamówienie nie istnieje');
+      }
     } catch (err) {
       return res.status(500).json({
         ok: false,

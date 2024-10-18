@@ -3,12 +3,15 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { useState, useRef, useEffect, useContext } from 'react';
 import fetcher from '../helpers/fetcher';
 import { AlertContext } from '../misc/AlertContext.jsx';
+import Confirm from './Confirm.jsx';
+
 export default function Product({ uniqueId, name, src, initPrice, packaging }) {
   const { addAlert } = useContext(AlertContext);
   const [isEditMode, setIsEditMode] = useState(false);
   const inputRef = useRef();
   const [price, setPrice] = useState(initPrice);
   const formRef = useRef(null);
+  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   useEffect(() => {
     if (isEditMode) {
       inputRef.current.focus();
@@ -47,15 +50,25 @@ export default function Product({ uniqueId, name, src, initPrice, packaging }) {
   return (
     <div
       key={uniqueId}
-      className="relative flex flex-col gap-2 items-center justify-end min-h-[250px] border-2 border-[#6b7a8f] p-2 bg-white rounded-md"
+      className="relative flex flex-col gap-2 items-center justify-end min-h-[250px] border-2 border-[#6b7a8f] p-2 bg-white rounded-md tablet:w-full"
     >
+      {isBeingDeleted ? (
+        <Confirm
+          action="Usuń produkt"
+          description="Czy na pewno chcesz usunąć produkt? Ta czynność jest nieodwracalna."
+          cancel={() => {
+            setIsBeingDeleted(false);
+          }}
+          confirm={removeProduct}
+        />
+      ) : null}
       {isEditMode ? (
         <div
           className="bg-[#E74D4D] border-[2px] border-[#E74D4D] rounded-lg p-1 self-end absolute right-[0.5rem] top-[0.5rem]"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            removeProduct();
+            setIsBeingDeleted(true);
           }}
         >
           <Trash2 color="white" width={'20px'} height={'auto'} />

@@ -31,7 +31,7 @@ export default function Products() {
   }, [data]);
   if (isLoading) return;
   return (
-    <div className="w-full box-border grid grid-cols-1 gap-4 p-4 no-scrollbar overflow-y-auto">
+    <div className="w-full box-border flex flex-col gap-4 p-4 no-scrollbar overflow-y-auto">
       {formActive ? (
         <NewProductForm
           handleAddProduct={handleAddProduct}
@@ -40,24 +40,28 @@ export default function Products() {
       ) : (
         <button
           className="flex w-full items-center justify-center gap-4 bg-[#f28a72] p-3 shadow-md rounded-full"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             setFormActive(true);
           }}
         >
           <CirclePlus color="#303c6c" width={'2rem'} height={'auto'} />
-          <p className="text-xl">Dodaj produkt</p>
+          <p className="text-xl tablet:text-2xl">Dodaj produkt</p>
         </button>
       )}
-      {products.map(({ _id, name, price, packagingMethod, image }) => (
-        <Product
-          key={_id}
-          uniqueId={_id}
-          name={name}
-          initPrice={price}
-          packaging={packagingMethod}
-          src={image}
-        />
-      ))}
+      <div className="flex flex-col gap-4 tablet:grid tablet:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] tablet:justify-items-center">
+        {products.map(({ _id, name, price, packagingMethod, image }) => (
+          <Product
+            key={_id}
+            uniqueId={_id}
+            name={name}
+            initPrice={price}
+            packaging={packagingMethod}
+            src={image}
+          />
+        ))}
+      </div>
     </div>
   );
 }

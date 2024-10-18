@@ -8,6 +8,9 @@ export default function Layout() {
       <Alerts />
       <Navbar />
       <Outlet />
+      {/* <div className="p-4">
+        <img src="/grządka.jpg" className="mt-[5rem]" />
+      </div> */}
     </div>
   );
 }

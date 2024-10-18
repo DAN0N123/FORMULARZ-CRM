@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from 'react';
-import { CirclePlus, ClipboardList } from 'lucide-react';
+import { CircleMinus, CirclePlus, ClipboardList } from 'lucide-react';
 import PhoneNumberInput from './PhoneNumberInput';
 import fetcher from '../helpers/fetcher';
 import useSWR from 'swr';
@@ -120,6 +120,30 @@ export default function OrderForm() {
     setTime(null);
   }
 
+  function handleAdd(id) {
+    const newProducts = products.map((product) => {
+      if (product.id === id) {
+        product.quantity++;
+      }
+      return product;
+    });
+    setProducts(newProducts);
+  }
+  function removeProduct(id) {
+    const newProducts = products.filter((product) => product.id != id);
+    setProducts(newProducts);
+  }
+  function handleSubtract(id) {
+    const newProducts = products.map((product) => {
+      if (product.quantity - 1 <= 1) return removeProduct(id);
+      if (product.id === id) {
+        product.quantity--;
+      }
+      return product;
+    });
+    setProducts(newProducts);
+  }
+
   function handleClientChoice(address, phone) {
     setAddress(address);
     setPhone(phone);
@@ -131,8 +155,10 @@ export default function OrderForm() {
     const name = e.target.querySelector('#productSelect').value;
     const quantity = e.target.querySelector('#quantity').value;
     const product = data.find((product) => product.name === name);
+    const uniqueId = crypto.randomUUID();
     const productObject = {
       name,
+      id: uniqueId,
       quantity: quantity,
       price: product.price,
       packagingMethod: product.packagingMethod,
@@ -156,7 +182,7 @@ export default function OrderForm() {
         />
       ) : null}
       <form
-        className="w-full h-fit bg-white p-4 rounded-lg flex flex-col gap-8 pb-12"
+        className="w-full h-full bg-white p-4 rounded-lg flex flex-col gap-8 pb-12 tablet:!text-xl"
         onSubmit={handleFormSubmit}
       >
         <div className="relative flex flex-col gap-1 before:absolute before:content-[''] before:w-full before:h-[2px] before:bg-[#CCCCCC] before:-bottom-4">
@@ -176,10 +202,11 @@ export default function OrderForm() {
           <p> Produkty: </p>
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               setProductModal(true);
             }}
-            className="flex ml-1 gap-2 items-center"
+            className="flex ml-1 gap-2 w-fit items-center"
           >
             <CirclePlus color="#f28a72" />
             <p className="text-coral"> Dodaj Produkt</p>
@@ -192,17 +219,35 @@ export default function OrderForm() {
             </p>
           ) : null}
 
-          {products.map(({ name, price, quantity, packagingMethod }, index) => (
+          {products.map(({ id, name, price, quantity, packagingMethod }) => (
             <div
-              key={index}
-              className="border-[1px] rounded-md p-1 gap-4 grid grid-cols-5 content-center"
+              key={id}
+              className="relative border-[1px] rounded-md p-1 gap-4 grid grid-cols-5 content-center"
             >
               <p className="col-start-1 col-end-3"> {name} </p>
               <p className="col-start-3 col-end-4"> {price} zł</p>
-              <p className="col-start-4 col-end-6">
+              <p className="col-start-4 col-end-5">
                 {' '}
                 {quantity} ({packagingMethod})
               </p>
+              <div className="absolute flex gap-2 right-2 h-full items-center">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleAdd(id);
+                  }}
+                >
+                  <CirclePlus />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubtract(id);
+                  }}
+                >
+                  <CircleMinus />
+                </button>
+              </div>
             </div>
           ))}
           {products.length > 0 ? (
@@ -291,7 +336,7 @@ export default function OrderForm() {
           </ThemeProvider>
         </div>
         <button
-          className="text-xl bg-coral p-4 shadow-md rounded-lg w-fit self-center mt-[2rem]"
+          className="text-xl bg-coral p-4 shadow-md rounded-lg w-fit self-center mt-[2rem] tablet:text-2xl"
           onSubmit={handleFormSubmit}
         >
           Dodaj zamówienie

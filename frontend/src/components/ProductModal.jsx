@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
+// import Spinner from './Spinner';
 export default function ProductModal({
   data,
   setProductModal,
@@ -25,6 +26,7 @@ export default function ProductModal({
       window.removeEventListener('click', closeFunction);
     };
   }, [setProductModal]);
+
   return (
     <div className="absolute flex inset-0 justify-center pt-[30%] w-screen h-screen">
       <div className="fixed w-[9999px] h-[9999px] top-0 left-0 backdrop-blur-sm z-[9998]"></div>
@@ -56,7 +58,7 @@ export default function ProductModal({
             <option value=""> - Wybierz z listy -</option>
             <optgroup label="Stała oferta" className="text-coral">
               {data
-                .filter((product) => !product.seasonal) // Non-seasonal products
+                .filter((product) => !product.seasonal)
                 .map(({ name }, index) => (
                   <option value={name} key={`regular-${index}`}>
                     {name}
@@ -64,10 +66,9 @@ export default function ProductModal({
                 ))}
             </optgroup>
 
-            {/* Group for seasonal products */}
             <optgroup label="Sezonowe" className="text-coral">
               {data
-                .filter((product) => product.seasonal) // Seasonal products
+                .filter((product) => product.seasonal)
                 .map(({ name }, index) => (
                   <option value={name} key={`seasonal-${index}`}>
                     {name}

@@ -45,7 +45,7 @@ export default function Clients() {
     setFormActive(false);
   }
   return (
-    <div className="flex flex-col gap-4 p-6">
+    <div className="flex flex-col gap-4 p-6 tablet:!text-lg">
       <form
         className="self-center mb-4 w-full flex justify-center"
         onSubmit={handleSubmit}
@@ -85,29 +85,31 @@ export default function Clients() {
             }}
           >
             <CirclePlus color="#303c6c" width={'2rem'} height={'100%'} />
-            <p className="text-xl">Dodaj stałego klienta</p>
+            <p className="text-xl tablet:text-2xl">Dodaj stałego klienta</p>
           </button>
         )}
       </form>
-      {clients.map((client) => (
-        <div
-          key={Math.random()}
-          className="rounded-lg bg-white justify-start p-4 flex items-center gap-4"
-        >
-          <CircleUserRound color="#f4976c" width={'2rem'} height={'100%'} />
-          <p className="relative w-full">
-            <p>{client.address}</p>
-            <p>tel: {client.phone}</p>
-          </p>
-          <button
-            onClick={() => {
-              removeClient(client);
-            }}
+      <div className="flex flex-col gap-4 tablet:grid tablet:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] tablet:justify-items-center">
+        {clients.map((client) => (
+          <div
+            key={Math.random()}
+            className="rounded-lg bg-white justify-start p-4 flex items-center gap-4 tablet:w-full tablet:max-w-[350px]"
           >
-            <Trash color="#F53939" width={'30px'} height={'100%'} />
-          </button>
-        </div>
-      ))}
+            <CircleUserRound color="#f4976c" width={'2rem'} height={'100%'} />
+            <p className="relative w-full">
+              <p>{client.address}</p>
+              <p>tel: {client.phone}</p>
+            </p>
+            <button
+              onClick={() => {
+                removeClient(client);
+              }}
+            >
+              <Trash color="#F53939" width={'30px'} height={'100%'} />
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

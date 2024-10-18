@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from 'react';
-import { CirclePlus, ClipboardList } from 'lucide-react';
+import { CirclePlus, ClipboardList, CircleMinus } from 'lucide-react';
 import PhoneNumberInput from './PhoneNumberInput';
 import fetcher from '../helpers/fetcher';
 import useSWR from 'swr';
@@ -17,13 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Big from 'big.js';
 import { AlertContext } from '../misc/AlertContext';
-import {
-  parse,
-  setHours,
-  setMinutes,
-  setSeconds,
-  setMilliseconds,
-} from 'date-fns';
+
 Big.DP = 2;
 Big.RM = Big.roundHalfUp;
 
@@ -80,7 +74,7 @@ export default function EditForm({ order }) {
   const { data } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
   const navigate = useNavigate();
   const [products, setProducts] = useState(order.products);
-  const [productModal, setProductModal] = useState(true);
+  const [productModal, setProductModal] = useState(false);
   const [clientModal, setClientModal] = useState(false);
 
   const [address, setAddress] = useState(order.address);
@@ -142,6 +136,37 @@ export default function EditForm({ order }) {
     }
   }
 
+  function handleAdd(id) {
+    const newProducts = products.map((product) => {
+      if (product?.id === id) {
+        product.quantity++;
+      }
+      return product;
+    });
+    setProducts(newProducts);
+  }
+  function removeProduct(id) {
+    const newProducts = products.filter((product) => product?.id !== id);
+    setProducts(newProducts);
+  }
+  function handleSubtract(id) {
+    const productToSubtract = products.find((product) => product.id === id);
+
+    if (!productToSubtract) return;
+
+    if (productToSubtract.quantity - 1 <= 0) {
+      removeProduct(id);
+    } else {
+      const newProducts = products.map((product) => {
+        if (product.id === id) {
+          return { ...product, quantity: product.quantity - 1 };
+        }
+        return product;
+      });
+      setProducts(newProducts);
+    }
+  }
+
   function resetForm() {
     setProducts([]);
     setAddress('');
@@ -162,7 +187,9 @@ export default function EditForm({ order }) {
     const name = e.target.querySelector('#productSelect').value;
     const quantity = e.target.querySelector('#quantity').value;
     const product = data.find((product) => product.name === name);
+    const uniqueId = crypto.randomUUID();
     const productObject = {
+      id: uniqueId,
       name,
       quantity: quantity,
       price: product.price,
@@ -171,6 +198,7 @@ export default function EditForm({ order }) {
     setProducts([...products, productObject]);
     setProductModal(false);
   }
+  console.log(products);
   return (
     <>
       {clientModal ? (
@@ -207,8 +235,8 @@ export default function EditForm({ order }) {
           <p> Produkty: </p>
           <button
             onClick={(e) => {
-              e.preventDefault();
               e.stopPropagation();
+              e.preventDefault();
               setProductModal(true);
             }}
             className="flex ml-1 gap-2 items-center"
@@ -224,17 +252,35 @@ export default function EditForm({ order }) {
             </p>
           ) : null}
 
-          {products.map(({ name, price, quantity, packagingMethod }, index) => (
+          {products.map(({ id, name, price, quantity, packagingMethod }) => (
             <div
-              key={index}
-              className="border-[1px] rounded-md p-1 gap-4 grid grid-cols-5 content-center"
+              key={id}
+              className="relative border-[1px] rounded-md p-1 gap-4 grid grid-cols-5 content-center"
             >
               <p className="col-start-1 col-end-3"> {name} </p>
               <p className="col-start-3 col-end-4"> {price} zł</p>
-              <p className="col-start-4 col-end-6">
+              <p className="col-start-4 col-end-5">
                 {' '}
                 {quantity} ({packagingMethod})
               </p>
+              <div className="absolute flex gap-2 right-2 h-full items-center">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleAdd(id);
+                  }}
+                >
+                  <CirclePlus />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubtract(id);
+                  }}
+                >
+                  <CircleMinus />
+                </button>
+              </div>
             </div>
           ))}
           {products.length > 0 ? (
