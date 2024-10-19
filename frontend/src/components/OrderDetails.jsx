@@ -44,10 +44,17 @@ export default function OrderDetails() {
   }
 
   if (editing && data) {
-    return <EditForm order={data} />;
+    return (
+      <EditForm
+        order={data}
+        close={() => {
+          setEditing(false);
+        }}
+      />
+    );
   }
   return (
-    <div className="relative w-full h-fit p-4">
+    <div className="relative w-full h-fit p-4 ">
       {confirmWindow ? (
         <Confirm
           action={'Usuń zamówienie'}
@@ -63,26 +70,46 @@ export default function OrderDetails() {
         />
       ) : null}
       <div className="bg-white h-full w-full rounded-xl shadow-2xl flex flex-col items-start p-4 gap-6 pb-8">
-        <p className="text-2xl text-slate self-center">
+        <p className="text-2xl text-slate self-center tablet:text-3xl">
           {' '}
           Zamówienie numer: {data.orderNumber}
         </p>
-        <div className="flex flex-col gap-3 w-full">
+        <div className="flex flex-col gap-3 w-full text-lg tablet:text-xl">
           <div className="flex gap-2 items-center">
-            <MapPin color="#f28a72" width={'30px'} height={'auto'} />
-            <p className="text-lg">{data.address} </p>
+            <MapPin
+              color="#f28a72"
+              width={'30px'}
+              height={'auto'}
+              className="tablet:w-[2rem]"
+            />
+            <p>{data.address} </p>
           </div>
           <div className="flex gap-2 items-center">
-            <Phone color="#f28a72" width={'30px'} height={'auto'} />
-            <p className="text-lg">{data.phone} </p>
+            <Phone
+              color="#f28a72"
+              width={'30px'}
+              height={'auto'}
+              className="tablet:w-[2rem]"
+            />
+            <p>{data.phone} </p>
           </div>
           <div className="flex gap-2 items-center">
-            <CalendarDays color="#f28a72" width={'30px'} height={'auto'} />
-            <p className="text-lg"> {data.date} </p>
+            <CalendarDays
+              color="#f28a72"
+              width={'30px'}
+              height={'auto'}
+              className="tablet:w-[2rem]"
+            />
+            <p> {data.date} </p>
           </div>
           <div className="flex gap-2 items-center">
-            <Clock color="#f28a72" width={'30px'} height={'auto'} />
-            <p className="text-lg"> {data.time} </p>
+            <Clock
+              color="#f28a72"
+              width={'30px'}
+              height={'auto'}
+              className="tablet:w-[2rem]"
+            />
+            <p> {data.time} </p>
           </div>
           {data.products.length > 0 ? (
             <p className="gap-4 p-1 grid grid-cols-5 w-full">
@@ -122,7 +149,7 @@ export default function OrderDetails() {
               </p>
             </div>
           ) : null}
-          <div className="mt-4 flex gap-4 dontPrint">
+          <div className="mt-4 flex gap-4 dontPrint text-lg tablet:text-xl">
             <button
               className="bg-slate rounded-2xl flex-grow p-3 flex justify-center items-center"
               onClick={(e) => {
@@ -131,7 +158,7 @@ export default function OrderDetails() {
                 setEditing(true);
               }}
             >
-              <p className="text-white text-lg">Edytuj</p>
+              <p className="text-white">Edytuj</p>
             </button>
             <button
               className="bg-[#E74D4D] rounded-2xl flex-grow p-3 flex justify-center items-center"
@@ -139,14 +166,14 @@ export default function OrderDetails() {
                 setConfirmWindow(true);
               }}
             >
-              <p className="text-white text-lg">Usuń</p>
+              <p className="text-white">Usuń</p>
             </button>
           </div>
           <button
             className="bg-slate rounded-2xl flex-grow p-3 flex justify-center items-center dontPrint"
             onClick={handlePrint}
           >
-            <p className="text-white text-lg">Drukuj</p>
+            <p className="text-white text-lg tablet:text-xl">Drukuj</p>
           </button>
         </div>
       </div>

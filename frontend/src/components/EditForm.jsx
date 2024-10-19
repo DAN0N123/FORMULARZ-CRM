@@ -70,9 +70,8 @@ const theme = createTheme({
   },
 });
 
-export default function EditForm({ order }) {
+export default function EditForm({ order, close }) {
   const { data } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
-  const navigate = useNavigate();
   const [products, setProducts] = useState(order.products);
   const [productModal, setProductModal] = useState(false);
   const [clientModal, setClientModal] = useState(false);
@@ -129,7 +128,7 @@ export default function EditForm({ order }) {
         body
       );
       resetForm();
-      navigate('/zamówienia');
+      close();
       addAlert('success', response);
     } catch (err) {
       addAlert('error', err);

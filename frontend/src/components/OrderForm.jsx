@@ -134,14 +134,21 @@ export default function OrderForm() {
     setProducts(newProducts);
   }
   function handleSubtract(id) {
-    const newProducts = products.map((product) => {
-      if (product.quantity - 1 <= 1) return removeProduct(id);
-      if (product.id === id) {
-        product.quantity--;
-      }
-      return product;
-    });
-    setProducts(newProducts);
+    const productToSubtract = products.find((product) => product.id === id);
+
+    if (!productToSubtract) return;
+
+    if (productToSubtract.quantity - 1 <= 0) {
+      removeProduct(id);
+    } else {
+      const newProducts = products.map((product) => {
+        if (product.id === id) {
+          return { ...product, quantity: product.quantity - 1 };
+        }
+        return product;
+      });
+      setProducts(newProducts);
+    }
   }
 
   function handleClientChoice(address, phone) {

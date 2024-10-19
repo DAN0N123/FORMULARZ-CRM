@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-import { CircleUserRound, Trash, CirclePlus, X } from 'lucide-react';
+import { CircleUserRound, CirclePlus, X, Trash2 } from 'lucide-react';
 import PhoneNumberInput from './PhoneNumberInput';
 import useSWR from 'swr';
 import fetcher from '../helpers/fetcher';
+import Confirm from './Confirm';
 export default function Clients() {
   const { data } = useSWR('http://127.0.0.1:3000/clients/get', fetcher);
   const [clients, setClients] = useState([]);
   const [formActive, setFormActive] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [isBeingDeleted, setIsBeingDeleted] = useState(null);
   async function removeClient(client) {
     try {
       await fetcher(
@@ -31,21 +34,44 @@ export default function Clients() {
     e.preventDefault();
     const address = document.querySelector('#address').value;
     const phone = document.querySelector('#phone').value;
+    let id;
     try {
-      await fetcher('http://127.0.0.1:3000/clients/add', 'POST', {
-        address,
-        phone,
-      });
+      const result = await fetcher(
+        'http://127.0.0.1:3000/clients/add',
+        'POST',
+        {
+          address,
+          phone,
+        }
+      );
+      id = result._id;
     } catch (err) {
       return err;
     }
 
-    const newClients = [{ address, phone }, ...clients];
+    const newClients = [{ address, phone, _id: id }, ...clients];
+
     setClients(newClients);
     setFormActive(false);
+    setPhone('');
   }
   return (
     <div className="flex flex-col gap-4 p-6 tablet:!text-lg">
+      {isBeingDeleted ? (
+        <Confirm
+          action={'Usuń stałego klienta'}
+          description={
+            'Czy na pewno chcesz usunąć tego klienta? Ta czynność jest nieodwracalna.'
+          }
+          cancel={() => {
+            setIsBeingDeleted(null);
+          }}
+          confirm={() => {
+            removeClient(isBeingDeleted);
+            setIsBeingDeleted(null);
+          }}
+        />
+      ) : null}
       <form
         className="self-center mb-4 w-full flex justify-center"
         onSubmit={handleSubmit}
@@ -70,7 +96,7 @@ export default function Clients() {
                   className="p-1 rounded-lg focus:outline-none border-[1px] border-[#CCCCCC]"
                 />
               </div>
-              <PhoneNumberInput />
+              <PhoneNumberInput value={phone} change={setPhone} />
               <button className="border-[1px] rounded-full bg-[#00000020] p-2 active:scale-[101%]">
                 {' '}
                 Dodaj{' '}
@@ -92,21 +118,24 @@ export default function Clients() {
       <div className="flex flex-col gap-4 tablet:grid tablet:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] tablet:justify-items-center">
         {clients.map((client) => (
           <div
-            key={Math.random()}
-            className="rounded-lg bg-white justify-start p-4 flex items-center gap-4 tablet:w-full tablet:max-w-[350px]"
+            key={client._id}
+            className="relative rounded-lg bg-white justify-start p-4 flex items-center gap-4 tablet:w-full tablet:max-w-[350px]"
           >
             <CircleUserRound color="#f4976c" width={'2rem'} height={'100%'} />
-            <p className="relative w-full">
+            <p className="relative w-[70%]">
               <p>{client.address}</p>
               <p>tel: {client.phone}</p>
             </p>
-            <button
-              onClick={() => {
-                removeClient(client);
-              }}
-            >
-              <Trash color="#F53939" width={'30px'} height={'100%'} />
-            </button>
+            <div className="flex items-center h-full right-[0.7rem] absolute">
+              <div
+                className="bg-[#E74D4D] rounded-full p-2"
+                onClick={() => {
+                  setIsBeingDeleted(client);
+                }}
+              >
+                <Trash2 color="white" width={'18px'} height={'auto'} />
+              </div>
+            </div>
           </div>
         ))}
       </div>
