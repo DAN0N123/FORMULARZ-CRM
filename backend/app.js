@@ -12,10 +12,22 @@ var app = express();
 const productsRouter = require('./routes/productsRouter');
 const clientsRouter = require('./routes/clientsRouter');
 const ordersRouter = require('./routes/ordersRouter');
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.PRODUCTION_ENVIRONMENT,
+];
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
