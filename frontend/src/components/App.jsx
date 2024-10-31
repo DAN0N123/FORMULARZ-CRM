@@ -6,6 +6,7 @@ import Clients from './Clients';
 import OrderForm from './OrderForm';
 import Orders from './Orders';
 import OrderDetails from './OrderDetails';
+import HomePage from './HomePage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
       {
         path: '/produkty',
         element: <Products />,

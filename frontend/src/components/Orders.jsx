@@ -8,10 +8,7 @@ import Confirm from './Confirm';
 // slate: '#6b7a8f',
 
 export default function Orders() {
-  const { data, isLoading } = useSWR(
-    'http://127.0.0.1:3000/orders/get',
-    fetcher
-  );
+  const { data, isLoading } = useSWR('/orders/get', fetcher);
   const [orders, setOrders] = useState([]);
   const [removingOrder, setRemovingOrder] = useState(null);
   useEffect(() => {
@@ -23,7 +20,7 @@ export default function Orders() {
 
   async function removeOrder(id) {
     try {
-      await fetcher(`http://127.0.0.1:3000/orders/remove/${id}`, 'POST');
+      await fetcher(`/orders/remove/${id}`, 'POST');
 
       window.location.reload();
     } catch (err) {

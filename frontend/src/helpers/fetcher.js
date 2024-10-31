@@ -1,5 +1,7 @@
+const apiUrl = import.meta.env.BACKEND_URL;
+
 export default async function fetcher(ENDPOINT, method = 'GET', body = null) {
-  const response = await fetch(ENDPOINT, {
+  const response = await fetch(`${apiUrl}${ENDPOINT}`, {
     method,
     headers: {
       'Content-Type': 'application/json',

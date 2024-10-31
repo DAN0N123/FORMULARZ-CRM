@@ -5,17 +5,14 @@ import useSWR from 'swr';
 import fetcher from '../helpers/fetcher';
 import Confirm from './Confirm';
 export default function Clients() {
-  const { data } = useSWR('http://127.0.0.1:3000/clients/get', fetcher);
+  const { data } = useSWR('/clients/get', fetcher);
   const [clients, setClients] = useState([]);
   const [formActive, setFormActive] = useState(false);
   const [phone, setPhone] = useState('');
   const [isBeingDeleted, setIsBeingDeleted] = useState(null);
   async function removeClient(client) {
     try {
-      await fetcher(
-        `http://127.0.0.1:3000/clients/delete/${client._id}`,
-        'POST'
-      );
+      await fetcher(`/clients/delete/${client._id}`, 'POST');
     } catch (err) {
       return;
     }
@@ -36,14 +33,10 @@ export default function Clients() {
     const phone = document.querySelector('#phone').value;
     let id;
     try {
-      const result = await fetcher(
-        'http://127.0.0.1:3000/clients/add',
-        'POST',
-        {
-          address,
-          phone,
-        }
-      );
+      const result = await fetcher('/clients/add', 'POST', {
+        address,
+        phone,
+      });
       id = result._id;
     } catch (err) {
       return err;

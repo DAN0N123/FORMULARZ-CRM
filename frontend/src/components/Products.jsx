@@ -6,10 +6,7 @@ import useSWR from 'swr';
 import fetcher from '../helpers/fetcher';
 import NewProductForm from './NewProductForm';
 export default function Products() {
-  const { data, error, isLoading } = useSWR(
-    'http://127.0.0.1:3000/products/get',
-    fetcher
-  );
+  const { data, error, isLoading } = useSWR('/products/get', fetcher);
 
   const [products, setProducts] = useState([]);
   const [formActive, setFormActive] = useState(false);
@@ -19,7 +16,7 @@ export default function Products() {
     const body = { name, price, image, packaging, seasonal };
 
     try {
-      fetcher('http://127.0.0.1:3000/products/add', 'POST', body);
+      fetcher('/products/add', 'POST', body);
     } catch (err) {
       console.log(err);
     }

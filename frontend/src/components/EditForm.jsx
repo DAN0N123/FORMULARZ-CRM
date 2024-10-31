@@ -71,7 +71,7 @@ const theme = createTheme({
 });
 
 export default function EditForm({ order, close }) {
-  const { data } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
+  const { data } = useSWR('/products/get', fetcher);
   const [products, setProducts] = useState(order.products);
   const [productModal, setProductModal] = useState(false);
   const [clientModal, setClientModal] = useState(false);
@@ -122,11 +122,7 @@ export default function EditForm({ order, close }) {
       originalOrderNumber: order.orderNumber,
     };
     try {
-      const response = await fetcher(
-        `http://127.0.0.1:3000/orders/edit/${order._id}`,
-        'PUT',
-        body
-      );
+      const response = await fetcher(`/orders/edit/${order._id}`, 'PUT', body);
       resetForm();
       close();
       addAlert('success', response);
@@ -369,7 +365,7 @@ export default function EditForm({ order, close }) {
           className="text-xl bg-coral p-4 shadow-md rounded-lg w-fit self-center mt-[2rem]"
           onSubmit={handleFormSubmit}
         >
-          Edytuj zamówienie
+          Zatwierdź
         </button>
       </form>
     </>

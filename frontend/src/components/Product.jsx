@@ -20,10 +20,7 @@ export default function Product({ uniqueId, name, src, initPrice, packaging }) {
 
   async function removeProduct() {
     try {
-      const response = await fetcher(
-        `http://127.0.0.1:3000/products/delete/${uniqueId}`,
-        'POST'
-      );
+      const response = await fetcher(`/products/delete/${uniqueId}`, 'POST');
       addAlert('success', response);
     } catch (err) {
       addAlert('error', err.message);
@@ -36,11 +33,7 @@ export default function Product({ uniqueId, name, src, initPrice, packaging }) {
     if (price === initPrice) return;
     const body = { price: price };
     try {
-      const response = await fetcher(
-        `http://127.0.0.1:3000/products/edit/${uniqueId}`,
-        'PUT',
-        body
-      );
+      const response = await fetcher(`/products/edit/${uniqueId}`, 'PUT', body);
       addAlert('success', response);
     } catch (err) {
       addAlert('error', err.message);

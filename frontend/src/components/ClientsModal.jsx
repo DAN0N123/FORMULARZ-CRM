@@ -5,7 +5,7 @@ import { X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 export default function ClientsModal({ setClientModal, handleClientChoice }) {
-  const { data } = useSWR('http://127.0.0.1:3000/clients/get', fetcher);
+  const { data } = useSWR(`/clients/get`, fetcher);
   const [value, setValue] = useState(null);
   const modalRef = useRef(null);
   useEffect(() => {

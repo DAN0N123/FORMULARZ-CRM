@@ -12,10 +12,7 @@ Big.RM = Big.roundHalfUp;
 
 export default function OrderDetails() {
   const { id } = useParams();
-  const { data, isLoading } = useSWR(
-    `http://127.0.0.1:3000/orders/get/${id}`,
-    fetcher
-  );
+  const { data, isLoading } = useSWR(`/orders/get/${id}`, fetcher);
   const [editing, setEditing] = useState(false);
   const [confirmWindow, setConfirmWindow] = useState(false);
   const navigate = useNavigate();
@@ -25,10 +22,7 @@ export default function OrderDetails() {
 
   async function removeOrder() {
     try {
-      const response = await fetcher(
-        `http://127.0.0.1:3000/orders/remove/${id}`,
-        'POST'
-      );
+      const response = await fetcher(`/orders/remove/${id}`, 'POST');
       if (response.ok) {
         navigate('/zamówienia');
       } else {

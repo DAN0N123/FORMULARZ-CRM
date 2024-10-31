@@ -55,7 +55,7 @@ const theme = createTheme({
 });
 
 export default function OrderForm() {
-  const { data } = useSWR('http://127.0.0.1:3000/products/get', fetcher);
+  const { data } = useSWR('/products/get', fetcher);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [productModal, setProductModal] = useState(false);
@@ -98,11 +98,7 @@ export default function OrderForm() {
     };
 
     try {
-      const response = await fetcher(
-        'http://127.0.0.1:3000/orders/add',
-        'POST',
-        body
-      );
+      const response = await fetcher('/orders/add', 'POST', body);
       resetForm();
       navigate('/zamówienia');
       addAlert('success', response);
