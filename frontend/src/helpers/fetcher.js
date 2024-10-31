@@ -1,4 +1,4 @@
-const apiUrl = import.meta.env.BACKEND_URL;
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default async function fetcher(ENDPOINT, method = 'GET', body = null) {
   const response = await fetch(`${apiUrl}${ENDPOINT}`, {
